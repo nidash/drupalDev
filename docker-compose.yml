@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  drupal:
+    image: drupal
+    container_name: drupalDev
+    ports:
+      - ${port}:80
+    volumes:
+      - ${modules}:/var/www/html/modules # nocopy is important
+      - ${themes}:/var/www/html/themes # nocopy is important
+      - ${profiles}:/var/www/html/profiles # nocopy is important
+      - /var/www/html/sites
+    restart: always
+
+  mysql:
+    image: mysql:5.7
+    container_name: drupalDev_mysql
+    command: mysqld --max_allowed_packet=64M
+    ports:
+      - ${db_port}:3306
+    volumes:
+      - ./backup:/docker-entrypoint-initdb.d  
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=drupal
+      - MYSQL_USER=drupal_user
+      - MYSQL_PASSWORD=drupal_pass

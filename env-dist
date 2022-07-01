@@ -1,0 +1,5 @@
+modules=./modules
+themes=./themes
+profiles=./profiles
+port=81
+db_port=3307
